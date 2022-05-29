@@ -1,44 +1,55 @@
 import React from "react";
 import { InfoWindow } from "@react-google-maps/api";
-export const SpotInfo = ({ selected, setSelected }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedSpot } from "../features/spotsSlice";
+
+export const SpotInfo = () => {
+  const { selectedSpot } = useSelector((state) => state.spots);
+  console.log(selectedSpot);
+  const dispatch = useDispatch();
   return (
     <>
-      {selected && (
+      {selectedSpot && (
         <InfoWindow
-          position={{ lat: selected.lat, lng: selected.lng }}
+          position={{
+            lat: parseFloat(selectedSpot.lat),
+            lng: parseFloat(selectedSpot.lng),
+          }}
           onCloseClick={() => {
-            setSelected(null);
+            dispatch(setSelectedSpot(null));
           }}
         >
           <div className="w-44">
             <p className="font-semibold">Opis: </p>
-            <p className=" font-light tracking-wide">{selected.spotName}</p>
+            <p className=" font-light tracking-wide">{selectedSpot.spotName}</p>
 
             <p className="mt-1 font-semibold">
               Rodzaj:{" "}
-              <span className="font-light tracking-wide ">{selected.kind}</span>
+              <span className="font-light tracking-wide ">
+                {selectedSpot.kind}
+              </span>
             </p>
 
             <p className="mt-1 font-semibold">
               Dostęp do miejsca:{" "}
-              {selected.arrive === "Łatwy" ? (
+              {selectedSpot.arrive === "Łatwy" ? (
                 <span className="font-semibold tracking-wide text-green-500">
-                  {selected.arrive}
+                  {selectedSpot.arrive}
                 </span>
               ) : null}
-              {selected.arrive === "Krótki spacer" ? (
+              {selectedSpot.arrive === "Krótki spacer" ? (
                 <span className="font-semibold tracking-wide text-green-700">
-                  {selected.arrive}
+                  {selectedSpot.arrive}
                 </span>
               ) : null}
-              {selected.arrive === "Dłuższy spacer" ? (
+              {selectedSpot.arrive === "Dłuższy spacer" ? (
                 <span className="font-semibold tracking-wide text-yellow-500">
-                  {selected.arrive}
+                  {selectedSpot.arrive}
                 </span>
               ) : null}
-              {selected.arrive === "Przeprawa" ? (
+              {selectedSpot.arrive === "Przeprawa" ? (
                 <span className="font-semibold tracking-wide text-amber-700">
-                  {selected.arrive}
+                  {selectedSpot.arrive}
                 </span>
               ) : null}
             </p>

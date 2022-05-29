@@ -23,13 +23,13 @@ import { AlertInfo } from "./components/AlertInfo";
 import { AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { setToRequest } from "./features/spotsSlice";
+import { setToRequest, setSelectedSpot } from "./features/spotsSlice";
 import { SpotInfo } from "./components/SpotInfo";
 function App() {
   const { documents: markers } = useCollection("spots");
   const dispatch = useDispatch();
   const { showModal } = useSelector((state) => state.modal);
-  const { toRequest } = useSelector((state) => state.spots);
+  const { toRequest, selectedSpot } = useSelector((state) => state.spots);
   const [selected, setSelected] = useState(null);
   const [status, setStatus] = useState(null);
 
@@ -97,7 +97,7 @@ function App() {
           markers.map((marker) => (
             <Marker
               key={marker.id}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              position={{ lat: parseFloat(marker.lat), lng: parseFloat(marker.lng) }}
               icon={{
                 url: fishMarker,
                 scaledSize: new window.google.maps.Size(50, 40),
@@ -105,7 +105,7 @@ function App() {
                 anchor: new window.google.maps.Point(25, 20),
               }}
               onClick={() => {
-                setSelected(marker);
+                dispatch(setSelectedSpot(marker));
               }}
             />
           ))}
@@ -129,10 +129,7 @@ function App() {
           />
         )}
 
-        {selected && <SpotInfo
-          selected={selected}
-          setSelected={setSelected}
-         />}
+        {selectedSpot && <SpotInfo />}
 
       </GoogleMap>
     </div>

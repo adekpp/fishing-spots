@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    toRequest: {}
+    toRequest: null,
+    selectedSpot: null
 }
 
 const spotsSlice = createSlice({
@@ -10,8 +11,11 @@ const spotsSlice = createSlice({
     reducers: {
         setToRequest: (state,{ payload }) => {
             state.toRequest = payload
+        },
+        setSelectedSpot: (state, { payload }) => {
+            state.selectedSpot = payload
         }
     }
 })
-export const {setToRequest} = spotsSlice.actions
+export const {setToRequest, setSelectedSpot} = spotsSlice.actions
 export default spotsSlice.reducer
